@@ -7,7 +7,7 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.16.3",
+    "express": "^4.16.4",
     "next": "7.0.1",
     "react": "16.5.2",
     "react-dom": "16.5.2"
