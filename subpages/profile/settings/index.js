@@ -4,7 +4,7 @@ import Error from 'next/error'
 
 import dynamic from 'next/dynamic'
 
-import parseSubpath, { getInitialProps } from '../../../lib/subpage.js'
+import { handleSubroute } from '../../../lib/subpage.js'
 
 import { parse } from 'url'
 
@@ -19,34 +19,12 @@ const Components = Object.assign(Object.create(null), {
 
 export default class extends Component {
 	static async getInitialProps (ctx) {
-		let meta, pageProps
-		let Component
-
-		const routerMount = '/profile'
-		const parsed = parse(ctx.asPath)
-		const pathname = parsed.pathname
-
-		meta = parseSubpath(
-			pathname === routerMount ? pathname: '/profile/settings',
-			parsed,
-			ctx.query
+		return await handleSubroute(
+			Components,
+			'/profile',
+			'/profile/settings',
+			ctx
 		)
-
-		Component = Components[meta.page]
-
-		if (Component) {
-			if (meta.fromQuery)
-				meta.query.id = meta.query.id.substr(meta.page.length)
-
-			pageProps = await getInitialProps(
-				Component, { ...ctx }
-			)
-		}
-
-		return {
-			pageName: meta.page || '',
-			pageProps: pageProps || {}
-		}
 	}
 
 	render () {
